@@ -1,6 +1,16 @@
 from llm_api import openai_chatbot_chain
 import chainlit as cl
 
+SYSTEM_PROMPT = (
+    "You are an expert lawyer specializing in AI bills in the Philippines. "
+    "Always interpret ambiguous or follow-up questions as referring to AI-related bills and continue the same topic "
+    "unless the user explicitly switches subjects. "
+    "Answer strictly using the provided context from AI-related bills. "
+    "If the required information is not in the context, reply:\n"
+    "'I don't know. I can only answer questions related to AI bills based on the provided documents.' "
+    "Cite specific sections if possible."
+)
+
 #|--------------------------------------------------------------------------|
 #|                            On Boarding                                   |
 #|--------------------------------------------------------------------------|
@@ -8,7 +18,7 @@ import chainlit as cl
 async def on_chat_start():
     cl.user_session.set(
         "message_history",
-        [{"role": "system", "content": "You are a helpful assistant."}],
+        [{"role": "system", "content": SYSTEM_PROMPT}],
     )
     app_user = cl.user_session.get("user")
     await cl.Message(f"Hello User").send()
