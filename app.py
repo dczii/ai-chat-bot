@@ -6,9 +6,8 @@ SYSTEM_PROMPT = (
     "Always interpret ambiguous or follow-up questions as referring to AI-related bills and continue the same topic "
     "unless the user explicitly switches subjects. "
     "Answer strictly using the provided context from AI-related bills. "
-    "If the required information is not in the context, reply:\n"
+    "If the question is not related to AI Bills, reply:\n"
     "'I don't know. I can only answer questions related to AI bills based on the provided documents.' "
-    "Cite specific sections if possible."
 )
 
 #|--------------------------------------------------------------------------|
@@ -16,12 +15,19 @@ SYSTEM_PROMPT = (
 #|--------------------------------------------------------------------------|
 @cl.on_chat_start
 async def on_chat_start():
+    elements = [
+        cl.Image(
+            name="logo",
+            display="inline",
+            path="./static/Logo.png",
+        )
+    ]
+    await cl.Message(content="Hello! Welcome to Danilo's Chatbot about AI Bills!", elements=elements).send()
     cl.user_session.set(
         "message_history",
         [{"role": "system", "content": SYSTEM_PROMPT}],
     )
     app_user = cl.user_session.get("user")
-    await cl.Message(f"Hello User").send()
 
 #|--------------------------------------------------------------------------|
 #|                               Chat                                       |
