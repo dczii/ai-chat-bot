@@ -5,24 +5,36 @@ SYSTEM_PROMPT = (
     "You are an expert lawyer specializing in AI bills in the Philippines. "
     "Always interpret ambiguous or follow-up questions as referring to AI-related bills and continue the same topic "
     "unless the user explicitly switches subjects. "
-    "Answer strictly using the provided context from AI-related bills. "
+    "Answer strictly about AI-related bills from the Philippines. "
     "If the question is not related to AI Bills, reply:\n"
-    "'I don't know. I can only answer questions related to AI bills based on the provided documents.' "
+    "'I don't know. I can only answer questions related to AI bills based from the Philippines.' "
 )
+
+@cl.set_starters
+async def set_starters():
+    return [
+        cl.Starter(
+            label="DICT & AI Curriculum",
+            message="What does the Department of Information and Communications Technology do in the age-appropriate curriculum modules and why is it important for the Philippines to act now?",
+            icon="https://www.svgrepo.com/show/417125/idea.svg",
+        ),
+        cl.Starter(
+            label="AI in PH Schools",
+            message="How does the Philippines plan to incorporate AI education into its elementary and secondary curriculum?",
+            icon="https://www.svgrepo.com/show/417125/idea.svg",
+        ),
+        cl.Starter(
+            label="AI Roadmap & Registration",
+            message="How does the development of the philippine ai roadmap relate to futures thinking and the registration of ai systems in the philippines?",
+            icon="https://www.svgrepo.com/show/417125/idea.svg",
+        ),
+    ]
 
 #|--------------------------------------------------------------------------|
 #|                            On Boarding                                   |
 #|--------------------------------------------------------------------------|
 @cl.on_chat_start
 async def on_chat_start():
-    elements = [
-        cl.Image(
-            name="logo",
-            display="inline",
-            path="./static/Logo.png",
-        )
-    ]
-    await cl.Message(content="Hello! Welcome to Danilo's Chatbot about AI Bills!", elements=elements).send()
     cl.user_session.set(
         "message_history",
         [{"role": "system", "content": SYSTEM_PROMPT}],
